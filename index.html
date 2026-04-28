@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>The Nebula Handbook: A Guide to Dying, Becoming, and Seeing</title>
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0
+        }
+
+        :root {
+            --fd: 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
+            /* 整体背景改为深紫罗兰蓝，保留宇宙深邃感，但更暖更透亮 */
+            --bg: #10122b;
+            --sf: #1c1f40;
+            --b1: rgba(255, 255, 255, 0.12);
+            --b2: rgba(255, 255, 255, 0.25);
+            /* 主文字暖白，次要文字淡紫灰 */
+            --tp: #fef9f2;
+            --ts: #d0c8e8;
+            --tt: #9590b8;
+            /* 主题色：生命绿 — 明亮薄荷翡翠 */
+            --td: #003d33;
+            --tm: #00b386;
+            --tb: #2bffc4;
+            --tl: #8cffe0;
+            --tp2: #c2fff0;
+            /* 主题色：星尘紫 — 粉紫到品红 */
+            --pd: #3b1f4d;
+            --pm: #c45dff;
+            --pl: #f0b3ff;
+            /* 主题色：视觉蓝 — 明亮天蓝 */
+            --bd: #002f4d;
+            --bm: #3db8ff;
+            --bl: #b3e0ff;
+            /* 主题色：镜像金 — 温暖琥珀金 */
+            --ad: #4d3000;
+            --am: #ffb84d;
+            --al: #ffe4b3;
+        }
+
+        html {
+            scroll-behavior: smooth
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg);
+            color: var(--tp);
+            min-height: 100vh;
+            line-height: 1.7
+        }
+
+        .cover {
+            position: relative;
+            height: 520px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center
+        }
+
+        .cover-canvas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%
+        }
+
+        .cover-text {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            padding: 2.5rem
+        }
+
+        .cover-tag {
+            font-size: 11px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--tl);
+            margin-bottom: 1.25rem
+        }
+
+        .cover-title {
+            font-family: var(--fd);
+            font-size: clamp(28px, 4.5vw, 48px);
+            font-weight: normal;
+            font-style: italic;
+            color: #fffef5;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 18px rgba(200, 180, 255, 0.6);
+        }
+
+        .cover-subtitle {
+            font-size: 12px;
+            color: var(--tp2);
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 2rem
+        }
+
+        .cover-rule {
+            width: 48px;
+            height: 1px;
+            background: var(--tb);
+            margin: 0 auto
+        }
+
+        .cover-intro {
+            font-size: 14px;
+            color: var(--ts);
+            max-width: 620px;
+            margin: 1.5rem auto 0;
+            line-height: 1.6;
+            font-style: italic;
+        }
+
+        .wrapper {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem 4rem
+        }
+
+        .chapter-nav {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin-bottom: 2.5rem;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            padding: 1rem 0;
+            background: var(--bg)
+        }
+
+        @media (max-width: 560px) {
+            .chapter-nav {
+                grid-template-columns: repeat(2, 1fr)
+            }
+        }
+
+        .nav-pill {
+            padding: 10px 6px;
+            text-align: center;
+            font-size: 11px;
+            color: var(--ts);
+            border: 0.5px solid var(--b1);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all .2s;
+            background: var(--sf);
+            line-height: 1.5;
+            user-select: none
+        }
+
+        .nav-pill:hover {
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--tp);
+            border-color: var(--b2)
+        }
+
+        .nav-pill.active {
+            background: var(--td);
+            color: var(--tp2);
+            border-color: var(--tm)
+        }
+
+        .nav-pill small {
+            display: block;
+            font-size: 10px;
+            opacity: .7;
+            margin-top: 2px
+        }
+
+        .section {
+            display: none
+        }
+
+        .section.active {
+            display: block;
+            animation: fi .25s ease
+        }
+
+        @keyframes fi {
+            from {
+                opacity: 0;
+                transform: translateY(6px)
+            }
+            to {
+                opacity: 1;
+                transform: none
+            }
+        }
+
+        .entry {
+            border: 0.5px solid var(--b1);
+            border-radius: 14px;
+            overflow: hidden;
+            margin-bottom: 1.25rem;
+            background: var(--sf);
+            transition: border-color .2s
+        }
+
+        .entry:hover {
+            border-color: var(--b2)
+        }
+
+        .entry-header {
+            display: flex;
+            align-items: stretch
+        }
+
+        .theme-cycle .entry-header {
+            border-left: 3px solid var(--tb)
+        }
+
+        .theme-stardust .entry-header {
+            border-left: 3px solid var(--pm)
+        }
+
+        .theme-seeing .entry-header {
+            border-left: 3px solid var(--bm)
+        }
+
+        .theme-mirror .entry-header {
+            border-left: 3px solid var(--am)
+        }
+
+        .entry-index {
+            width: 52px;
+            min-height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 1px;
+            flex-shrink: 0;
+            writing-mode: vertical-rl
+        }
+
+        .theme-cycle .entry-index {
+            background: var(--td);
+            color: var(--tl)
+        }
+
+        .theme-stardust .entry-index {
+            background: var(--pd);
+            color: var(--pl)
+        }
+
+        .theme-seeing .entry-index {
+            background: var(--bd);
+            color: var(--bl)
+        }
+
+        .theme-mirror .entry-index {
+            background: var(--ad);
+            color: var(--al)
+        }
+
+        .entry-title-block {
+            flex: 1;
+            padding: 1rem 1.25rem .875rem;
+            border-left: 0.5px solid var(--b1)
+        }
+
+        .entry-label {
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 5px
+        }
+
+        .theme-cycle .entry-label {
+            color: var(--tb)
+        }
+
+        .theme-stardust .entry-label {
+            color: var(--pm)
+        }
+
+        .theme-seeing .entry-label {
+            color: var(--bm)
+        }
+
+        .theme-mirror .entry-label {
+            color: var(--am)
+        }
+
+        .entry-title {
+            font-size: 19px;
+            font-weight: normal;
+            font-style: italic;
+            color: var(--tp);
+            font-family: var(--fd)
+        }
+
+        .entry-body {
+            padding: 0 1.25rem 0 calc(52px + 1.25rem);
+            border-top: 0.5px solid var(--b1)
+        }
+
+        .entry-fact {
+            padding: .9rem 0;
+            font-size: 13px;
+            color: var(--ts);
+            line-height: 1.75;
+            border-bottom: 0.5px solid var(--b1)
+        }
+
+        .entry-fact-label {
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--tt);
+            margin-bottom: 5px
+        }
+
+        .entry-poetry {
+            padding: .9rem 0
+        }
+
+        .poetry-line {
+            font-family: var(--fd);
+            font-size: 15px;
+            font-style: italic;
+            color: var(--tp);
+            line-height: 2
+        }
+
+        .poetry-line + .poetry-line {
+            border-top: 0.5px dashed var(--b1);
+            padding-top: .5rem;
+            margin-top: .5rem
+        }
+
+        .visual-insert {
+            margin: 1.5rem 0;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 0.5px solid var(--b1)
+        }
+
+        .visual-insert svg {
+            display: block
+        }
+
+        .colophon {
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 0.5px solid var(--b1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem
+        }
+
+        .colophon-left {
+            font-size: 11px;
+            color: var(--tt);
+            line-height: 1.7
+        }
+
+        .colophon-badge {
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--tb);
+            border: 0.5px solid var(--tb);
+            padding: 5px 12px;
+            border-radius: 8px
+        }
+    </style>
+</head>
+<body>
+
+<div class="cover">
+    <!-- 全新绘制的星云背景：用多层发光椭圆、柔光和散布的星点 -->
+    <svg class="cover-canvas" viewBox="0 0 1200 520" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+        <defs>
+            <!-- 星云光晕渐变 -->
+            <radialGradient id="nebPink" cx="30%" cy="35%" r="60%">
+                <stop offset="0%" stop-color="#ff6bb3" stop-opacity="0.45" />
+                <stop offset="60%" stop-color="#b44dff" stop-opacity="0.15" />
+                <stop offset="100%" stop-color="#10122b" stop-opacity="0" />
+            </radialGradient>
+            <radialGradient id="nebCyan" cx="75%" cy="60%" r="55%">
+                <stop offset="0%" stop-color="#3df0ff" stop-opacity="0.4" />
+                <stop offset="50%" stop-color="#2b8cff" stop-opacity="0.12" />
+                <stop offset="100%" stop-color="#10122b" stop-opacity="0" />
+            </radialGradient>
+            <radialGradient id="nebGold" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#ffcf66" stop-opacity="0.3" />
+                <stop offset="40%" stop-color="#ff8c3d" stop-opacity="0.1" />
+                <stop offset="100%" stop-color="#10122b" stop-opacity="0" />
+            </radialGradient>
+            <radialGradient id="nebDeep" cx="45%" cy="70%" r="60%">
+                <stop offset="0%" stop-color="#5c2dd5" stop-opacity="0.25" />
+                <stop offset="70%" stop-color="#281d6b" stop-opacity="0.08" />
+                <stop offset="100%" stop-color="#10122b" stop-opacity="0" />
+            </radialGradient>
+            <!-- 星星的光晕滤镜 -->
+            <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="3" result="blur" />
+                <feMerge>
+                    <feMergeNode in="blur" />
+                    <feMergeNode in="SourceGraphic" />
+                </feMerge>
+            </filter>
+        </defs>
+
+        <!-- 深空基底 -->
+        <rect width="1200" height="520" fill="#0c0e25" />
+
+        <!-- 四大色团星云 -->
+        <rect width="1200" height="520" fill="url(#nebPink)" />
+        <rect width="1200" height="520" fill="url(#nebCyan)" />
+        <rect width="1200" height="520" fill="url(#nebGold)" />
+        <rect width="1200" height="520" fill="url(#nebDeep)" />
+
+        <!-- 飘渺的结构线条，连接星云区域 -->
+        <g stroke="#ffffff" stroke-width="0.5" opacity="0.15">
+            <path d="M180,80 Q320,160 400,140 T580,170 T750,110 T900,190 T1080,100" fill="none" />
+            <path d="M200,300 Q300,380 420,360 T560,310 T700,390 T880,330 T1020,400" fill="none" />
+            <path d="M380,140 Q460,260 560,310" fill="none" stroke="#ff8c3d" opacity="0.4" />
+            <path d="M750,110 Q840,230 900,190" fill="none" stroke="#3df0ff" opacity="0.4" />
+        </g>
+
+        <!-- 明亮的星点（带光晕） -->
+        <g fill="#ffffff" filter="url(#glow)">
+            <circle cx="220" cy="120" r="3.5" fill="#ffcf66" opacity="0.95"/>
+            <circle cx="480" cy="160" r="3" fill="#ff6bb3" opacity="0.9"/>
+            <circle cx="680" cy="90" r="4" fill="#3df0ff" opacity="0.95"/>
+            <circle cx="880" cy="210" r="3.2" fill="#b07cff" opacity="0.9"/>
+            <circle cx="1020" cy="130" r="3.8" fill="#ffcf66" opacity="0.9"/>
+            <circle cx="320" cy="360" r="3" fill="#ff6bb3" opacity="0.8"/>
+            <circle cx="580" cy="340" r="2.8" fill="#ffcf66" opacity="0.85"/>
+            <circle cx="760" cy="400" r="3.3" fill="#3df0ff" opacity="0.85"/>
+            <circle cx="920" cy="380" r="2.5" fill="#b07cff" opacity="0.8"/>
+            <circle cx="150" cy="250" r="2.2" fill="#ffffff" opacity="0.7"/>
+            <circle cx="1080" cy="280" r="2.6" fill="#ffffff" opacity="0.7"/>
+            <circle cx="500" cy="420" r="2" fill="#ffffff" opacity="0.6"/>
+        </g>
+
+        <!-- 散布的小星点 -->
+        <g fill="#e8e0ff" opacity="0.55">
+            <circle cx="80" cy="60" r="1.2" /><circle cx="340" cy="70" r="1" /><circle cx="530" cy="110" r="1.3" />
+            <circle cx="710" cy="140" r="0.9" /><circle cx="840" cy="70" r="1.1" /><circle cx="970" cy="100" r="1.3" />
+            <circle cx="110" cy="400" r="1" /><circle cx="280" cy="440" r="1.4" /><circle cx="440" cy="390" r="0.8" />
+            <circle cx="630" cy="410" r="1.2" /><circle cx="800" cy="360" r="1" /><circle cx="950" cy="430" r="1.3" />
+            <circle cx="60" cy="180" r="0.8" /><circle cx="1150" cy="200" r="1" /><circle cx="400" cy="280" r="0.9" />
+            <circle cx="650" cy="260" r="1.1" /><circle cx="900" cy="280" r="0.9" />
+        </g>
+
+        <!-- 底部渐变遮罩，让文字更清晰 -->
+        <linearGradient id="coverFade" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="50%" stop-color="#0c0e25" stop-opacity="0" />
+            <stop offset="100%" stop-color="#0c0e25" stop-opacity="0.85" />
+        </linearGradient>
+        <rect x="0" y="200" width="1200" height="320" fill="url(#coverFade)" />
+    </svg>
+
+    <div class="cover-text">
+        <div class="cover-tag">Nebulae Storybook &middot; Jiaqi Wang</div>
+        <div class="cover-title">The Nebula Handbook</div>
+        <div class="cover-subtitle">A Guide to Dying, Becoming, and Seeing</div>
+        <div class="cover-rule"></div>
+        <div class="cover-intro">
+            A journey through stellar graveyards and cosmic nurseries—for anyone seeking to understand how dying creates, how stardust becomes us, and how the colors we see in the universe are, in the end, reflections of our own searching hearts.
+        </div>
+    </div>
+</div>
+
+<!-- 以下卡片内容与之前完全相同，为保证完整性一并给出 -->
+<div class="wrapper">
+    <nav class="chapter-nav">
+        <div class="nav-pill active" onclick="showSection('cycle',this)">Death & Rebirth<small>Graveyard · Cradle · Time</small></div>
+        <div class="nav-pill" onclick="showSection('stardust',this)">Stardust Legacy<small>Elements · Origins · Us</small></div>
+        <div class="nav-pill" onclick="showSection('seeing',this)">Art of Seeing<small>Color · Filters · Co‑creation</small></div>
+        <div class="nav-pill" onclick="showSection('mirror',this)">Cosmic Mirror<small>Myth · Mind · Poetry</small></div>
+    </nav>
+
+    <!-- Section I: Death & Rebirth -->
+    <div class="section active" id="sec-cycle">
+        <div class="entry theme-cycle">
+            <div class="entry-header">
+                <div class="entry-index">01</div>
+                <div class="entry-title-block">
+                    <div class="entry-label">Death & Rebirth · The Cycle</div>
+                    <div class="entry-title">The Universe’s “Being‑Towards‑Death”</div>
+                </div>
+            </div>
+            <div class="entry-body">
+                <div class="entry-fact">
+                    <div class="entry-fact-label">Scientific fact</div>
+                    Nebulae are not a single concept. They are both the cradle of star birth (like the “Pillars of Creation” in the Eagle Nebula) and the remnants of stellar death. What you mentioned as “remnants of stellar explosions” accurately points to supernova remnants—where massive stars, at the end of their lives, violently eject their outer layers into space through a cataclysmic explosion, forming expanding nebulae such as the famous Crab Nebula. For low‑ to medium‑mass stars like our Sun, the death process is gentler; they peacefully shed their outer layers to create beautiful planetary nebulae, leaving behind a white dwarf at the center.
+                </div>
+                <div class="entry-poetry">
+                    <div class="poetry-line">This truly is a cosmic metaphor. A nebula is a literal “stellar graveyard,” but it is upon this very graveyard that the grandest rebirth unfolds.</div>
+                    <div class="poetry-line">Life and death are not binary opposites but a seamless, end‑to‑end circle. It is like seeing fresh, green grass sprouting, crop after crop, beside an ancient, silent cemetery.</div>
+                    <div class="poetry-line">Death provides the richest soil for life.</div>
+                </div>
+            </div>
+        </div>
+        <body>
+          <img src="https://cdn.esawebb.org/archives/images/screen/weic2205a.jpg" 
+               alt="persistence diagram" 
+               style="width: 100%; max-width: 740px; height: auto; display: block;">
+               <figcaption style="font-size: 12px; color: #888; margin-top: 6px;">
+              NIRCam Image of the “Cosmic Cliffs” in Carina. Credit: NASA, ESA, CSA, and STScI.
+      </body>
+        
+       
+    
+        <div class="entry theme-cycle">
+            <div class="entry-header">
+                <div class="entry-index">02</div>
+                <div class="entry-title-block">
+                    <div class="entry-label">Death & Rebirth · Time</div>
+                    <div class="entry-title">Sculptures of Time and an Eternal Instant</div>
+                </div>
+            </div>
+            <div class="entry-body">
+                <div class="entry-fact">
+                    <div class="entry-fact-label">Scientific fact</div>
+                    Nebulae are not eternal; they are but a cosmic blink. A typical planetary nebula has a lifespan of only tens of thousands of years—not even a single “breath” in the life of the universe. Take the Crab Nebula, for example; we know exactly that it was born from a supernova explosion in 1054 AD. Nearly a thousand years later, it is still expanding at roughly 1,500 kilometers per second. Yet, on the scale of human perception, a telescope image of a nebula seems timeless and unchanging. What we see is a snapshot, frozen in time.
+                </div>
+                <div class="entry-poetry">
+                    <div class="poetry-line">With mayfly-like lives, we gaze upon a cosmic-scale phenomenon, yet we decipher within its static snapshot the entire cycle from death to rebirth.</div>
+                    <div class="poetry-line">We can never witness the complete life story of a nebula. It is our intellect and imagination that compress vast time and stretch a still frame, rehearsing a rebirth spanning millions of years in a frozen moment of death.</div>
+                    <div class="poetry-line">We are not merely observing a nebula; through it, we are experiencing a kind of time we can never personally inhabit.</div>
+                </div>
+            </div>
+        </div>
+        <body>
+          <img src="https://ktvz.b-cdn.net/2023/08/cnn-L19jb21wb25lbnRzL2ltYWdlL2luc3RhbmNlcy9jbGx3cGc4amQwMDByMzU2Z3hsZXZsaXJm-L19wYWdlcy9jbGx3cDdtcDIwMDAwbzdvemFvYzJoM3Iy.jpg" 
+               alt="persistence diagram" 
+               style="width: 100%; max-width: 740px; height: auto; display: block;">
+               <figcaption style="font-size: 12px; color: #888; margin-top: 6px;">
+              This image from the NASA/ESA Hubble Space Telescope of the Ring Nebula was released in 2013 and has since become one of the observatory's most well-known images. From Earth's perspective, the nebula looks roughly elliptical. Credit: NASA, ESA, and C. Robert O’Dell (Vanderbilt University)
+      </body>
+
+    </div>
+
+    <!-- Section II: Stardust Legacy -->
+    <div class="section" id="sec-stardust">
+        <div class="entry theme-stardust">
+            <div class="entry-header">
+                <div class="entry-index">03</div>
+                <div class="entry-title-block">
+                    <div class="entry-label">Stardust Legacy · Origins</div>
+                    <div class="entry-title">We Are All Children of the Stars</div>
+                </div>
+            </div>
+            <div class="entry-body">
+                <div class="entry-fact">
+                    <div class="entry-fact-label">Scientific fact</div>
+                    In the beginning, the Big Bang produced only hydrogen, helium, and a tiny amount of lithium. All the heavy elements that constitute our bodies and our world—the calcium in our bones, the iron in our blood, the oxygen we breathe, the gold and silver in our electronics—were synthesized inside stars through nuclear fusion. However, ordinary stars can only fuse elements up to iron. Every element heavier than iron is forged exclusively in the extreme temperatures and pressures of a supernova explosion, in those fleeting seconds of destruction.
+                </div>
+                <div class="entry-poetry">
+                    <div class="poetry-line">The light in your eyes originated from starlight billions of years old; the iron in your blood was forged in the magnificent explosion of some ancient, dying star.</div>
+                    <div class="poetry-line">We are not merely descendants of stars; we are literally a part of the cosmos, briefly taking on human form to experience and contemplate the vast universe itself.</div>
+                    <div class="poetry-line">When you feel lonely, remember that your atoms traveled through billions of years of spacetime, just to assemble into the unique you, here and now.</div>
+                </div>
+            </div>
+        </div>
+        <body>
+          <img src="https://images.fineartamerica.com/images/artworkimages/mediumlarge/3/cassiopeia-a-from-nasa-james-webb-chandra-and-hubble-space-telescopes-carol-japp.jpg" 
+               alt="persistence diagram" 
+               style="width: 100%; max-width: 740px; height: auto; display: block;">
+               <figcaption style="font-size: 12px; color: #888; margin-top: 6px;">
+              Cassiopeia A from NASA James Webb Chandra and Hubble Space Telescopes is a photograph by Carol Japp which was uploaded on January 25th, 2024.
+      </body>
+  
+        <div class="entry theme-stardust">
+            <div class="entry-header">
+                <div class="entry-index">04</div>
+                <div class="entry-title-block">
+                    <div class="entry-label">Stardust Legacy · Encounters</div>
+                    <div class="entry-title">The Ancient Stellar Duet Inside You</div>
+                </div>
+            </div>
+            <div class="entry-body">
+                <div class="entry-fact">
+                    <div class="entry-fact-label">Scientific fact</div>
+                    The primordial nebula that formed our Solar System was itself a relic of a grand cosmic “chorus.” It likely blended the ashes of multiple stars of different masses that exploded at different times. One supernova might have supplied the gold and uranium, while another contributed the primary iron and silicon. Isotopic studies even suggest that the early Solar System may have been “seeded” by the shockwave of a very nearby, exploding supernova.
+                </div>
+                <div class="entry-poetry">
+                    <div class="poetry-line">The gold ring on your finger and the iron carrying oxygen in your blood probably originated from two entirely different stellar graveyards, born billions of years ago and possibly thousands of light‑years apart.</div>
+                    <div class="poetry-line">They wandered the Milky Way for eons, finally meeting by chance in the same interstellar cloud, together forming the Earth, and forming you.</div>
+                    <div class="poetry-line">You are not the orphan of a single star; you are the miracle of countless stars, converging at the edge of death across spacetime. Your body is a living monument to this vast cosmic encounter.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section III: Art of Seeing -->
+    <div class="section" id="sec-seeing">
+        <div class="entry theme-seeing">
+            <div class="entry-header">
+                <div class="entry-index">05</div>
+                <div class="entry-title-block">
+                    <div class="entry-label">Art of Seeing · Color</div>
+                    <div class="entry-title">The Colors of Reality and Imagination</div>
+                </div>
+            </div>
+            <div class="entry-body">
+                <div class="entry-fact">
+                    <div class="entry-fact-label">Scientific fact</div>
+                    The dazzling nebula images we see are a beautiful fusion of scientific data and artistic creation. Astronomical telescopes use various narrowband filters that allow only specific wavelengths of light emitted by particular elements (like hydrogen, oxygen, and sulfur) to pass through. The light from each element initially forms a black‑and‑white grayscale image. Scientists and image processors then artificially assign a specific color to each grayscale image representing a different element (such as the famous Hubble palette: sulfur = red, hydrogen = green, oxygen = blue). These are then stacked and combined to produce the vibrant colors we see.
+                </div>
+                <div class="entry-poetry">
+                    <div class="poetry-line">These colors represent the universe seen through multiple filters: the telescope’s choice of wavelength, the personal aesthetic of the image processor, and your own perspective as the viewer.</div>
+                    <div class="poetry-line">In the end, the nebula image is no longer an objective representation of the cosmos. It becomes a unique co‑creation of the universe and you, of science and art.</div>
+                </div>
+            </div>
+        </div>
+
+        <body>
+          <img src="https://www.esa.int/var/esa/storage/images/esa_multimedia/images/2024/07/interacting_galaxies_arp_142_hubble_and_webb_image/26227788-1-eng-GB/Interacting_galaxies_Arp_142_Hubble_and_Webb_image_pillars.jpg" 
+               alt="persistence diagram" 
+               style="width: 100%; max-width: 740px; height: auto; display: block;">
+               <figcaption style="font-size: 12px; color: #888; margin-top: 6px;">
+                Hubble’s visible light image at left, and Webb’s near-infrared image at right. Both show the Egg at left and the Penguin at right. CREDIT: NASA, ESA, CSA, STScI.
+              </body>
+       
+        
+        <div class="entry theme-seeing">
+            <div class="entry-header">
+                <div class="entry-index">06</div>
+                <div class="entry-title-block">
+                    <div class="entry-label">Art of Seeing · Truth</div>
+                    <div class="entry-title">Reality Never Wears Its “Naked Colors”</div>
+                </div>
+            </div>
+            <div class="entry-body">
+                <div class="entry-fact">
+                    <div class="entry-fact-label">Scientific fact</div>
+                    The original intent of astronomers adding color to monochrome grayscale images was not aesthetic deception. It is a powerful tool for scientific visualization. By assigning different colors to different elements, researchers can clearly reveal a nebula’s chemical composition, temperature distribution, and physical structure in a single image. Color here acts as a “translator” of physical information.
+                </div>
+                <div class="entry-poetry">
+                    <div class="poetry-line">Absolute, uninterpreted reality may forever be beyond our grasp. The real universe never presents itself to our eyes in “naked colors.”</div>
+                    <div class="poetry-line">We must rely on instrumental filters, algorithms, knowledge, and finally aesthetic sense, to translate those invisible radiations into beauty our brains can empathize with.</div>
+                    <div class="poetry-line">Every breathtaking nebula image is not an objective “discovery,” but a “creation” completed jointly by humanity and nature, science and art, reason and emotion. What we truly love is the humanistic brilliance we ourselves have painted onto the cosmos.</div>
+                </div>
+            </div>
+        </div>
+        <body>
+          <img src="https://www.sciencenewstoday.org/wp-content/uploads/2025/03/observations-explore-m.jpg" 
+               alt="persistence diagram" 
+               style="width: 100%; max-width: 740px; height: auto; display: block;">
+               <figcaption style="font-size: 12px; color: #888; margin-top: 6px;">
+                Coadded images of NGC 1514 at 7.7 µm (upper left), 12.8 µm (upper right), 25.5 µm (lower left), and a three-color composite image of the three. The origin (0’,0‘) corresponds to the position of the central binary star. Credit: arXiv (2025). DOI: 10.48550/arxiv.2502.21281
+      </body>
+    </div>
+
+    <!-- Section IV: Cosmic Mirror -->
+    <div class="section" id="sec-mirror">
+        <div class="entry theme-mirror">
+            <div class="entry-header">
+                <div class="entry-index">07</div>
+                <div class="entry-title-block">
+                    <div class="entry-label">Cosmic Mirror · Monument</div>
+                    <div class="entry-title">Nebula: Cosmic Monument and Poetry</div>
+                </div>
+            </div>
+            <div class="entry-body">
+                <div class="entry-fact">
+                    <div class="entry-fact-label">Comprehensive philosophical reflection</div>
+                    A nebula is a monument the universe erects to itself. It commemorates destruction and celebrates birth. On a timescale of billions of years, it calmly tells us: An ending is a beginning, and separation is the seed of reunion. When we gaze upon a nebula image that has been “translated” through layers of interpretation, what we see is far more than a cloud of gas and dust thousands of light‑years away. We see the bones of stars, the seeds of life, the shape of time, and humanity’s never‑extinguished curiosity to understand eternity and our own origins.
+                </div>
+                <div class="entry-poetry">
+                    <div class="poetry-line">It is a silent symphony of life, played upon a graveyard.</div>
+                    <div class="poetry-line">And you are a note within this poem.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="entry theme-mirror">
+            <div class="entry-header">
+                <div class="entry-index">08</div>
+                <div class="entry-title-block">
+                    <div class="entry-label">Cosmic Mirror · Projection</div>
+                    <div class="entry-title">The Cosmic Rorschach Inkblot Test</div>
+                </div>
+            </div>
+            <div class="entry-body">
+                <div class="entry-fact">
+                    <div class="entry-fact-label">Scientific fact</div>
+                    The astonishing variety of nebula shapes is no accident. The symmetrical spherical shells, bipolar lobes, and even spiral structures of planetary nebulae are often closely tied to the “death style” of their central star. A solitary star's death may produce a relatively regular shell, but a binary system or a star with a strong magnetic field can eject material along specific directions like an out‑of‑control fire hose, carving out breathtaking shapes reminiscent of butterflies or hourglasses. Combined with the collision of interstellar winds and previously ejected material, nebulae become the grandest gallery of abstract sculptures in the universe.
+                </div>
+                <div class="entry-poetry">
+                    <div class="poetry-line">Faced with these chaotic and magnificent forms, humanity unknowingly participates in a cosmic-scale Rorschach inkblot test.</div>
+                    <div class="poetry-line">We perceive a cloud of ionized gas as the “Eye of God,” name a shock front the “Queen of Sheba's Crown,” or call a supernova remnant the “Veil Nebula.” These names do not belong to the nebulae themselves; they are projections of our own minds.</div>
+                    <div class="poetry-line">We long to find order in chaos, to recognize the familiar in the strange. Every act of naming is humanity solemnly embedding its own stories, myths, and emotions onto the silent canvas of the cosmos.</div>
+                </div>
+            </div>
+        </div>
+
+        
+              <body>
+                <img src="https://planetary.s3.amazonaws.com/web/assets/pictures/_2400x1680_crop_center-center_82_line/100-planetary-nebulae.jpg" 
+                     alt="persistence diagram" 
+                     style="width: 100%; max-width: 740px; height: auto; display: block;">
+                     <figcaption style="font-size: 12px; color: #888; margin-top: 6px;">
+                      100 planetary nebulas A large collage of planetary nebulas processed by Judy Schmidt. All are presented north up and at apparent size relative to one another. Colors are aesthetic choices, especially since most planetary nebulas are imaged with narrowband filters. NASA / ESA / Judy Schmidt
+                    </body>
+              
+    </div>
+  
+
+    <div class="colophon">
+        <div class="colophon-left">The Nebulae Handbook · A Guide to Dying, Becoming, and Seeing · Jiaqi Wang<br>Based on a conversation about stellar graveyards, stardust, and the colors we give the cosmos.<br>Created for the curious.</div>
+        <div class="colophon-badge">8 entries</div>
+    </div>
+</div>
+
+<script>
+    function showSection(id, el) {
+        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+        document.querySelectorAll('.nav-pill').forEach(p => p.classList.remove('active'));
+        document.getElementById('sec-' + id).classList.add('active');
+        el.classList.add('active');
+    }
+</script>
+</body>
+</html>
